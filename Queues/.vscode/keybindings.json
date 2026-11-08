@@ -1,0 +1,13 @@
+[
+    {
+        "key": "ctrl+enter",
+        "command": "workbench.action.tasks.build",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+shift+enter",
+        "command": "workbench.action.tasks.runTask",
+        "args": "build and run QueueSTL",
+        "when": "editorTextFocus"
+    }
+]

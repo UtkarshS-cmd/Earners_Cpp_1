@@ -1,6 +1,7 @@
 #include<iostream>
 #include<queue>
 using namespace std;
+
 void pushAtIdx(int idx, int ele, queue<int>& q){
     int n = q.size();
     for(int i=1;i<=idx;i++){
@@ -14,11 +15,50 @@ void pushAtIdx(int idx, int ele, queue<int>& q){
     }
 }
 void popAtIdx(int idx, queue<int>& q){
-    
+    int n = q.size();
+
+    if(idx < 0 || idx >= n){
+        cout<<"Invalid index"<<endl;
+        return;
+    }
+
+    for(int i = 0; i < idx; i++){
+        q.push(q.front());
+        q.pop();
+    }
+
+
+    q.pop(); // pop ele at index
+
+    for(int i = 0; i < n - idx - 1; i++){
+        q.push(q.front());
+        q.pop();
+    }
+
 }
-// int getAtIdx(int idx, queue<int>& q){
-    
-// }
+
+int getAtIdx(int idx, queue<int>& q){
+    int n = q.size();    
+
+    if(idx < 0 || idx >= n){
+        cout<<"Invalid index"<<endl;
+        return -1;
+    }
+
+    int ans = -1;
+
+    for(int i = 0; i < n; i++){
+        int curr = q.front();
+        q.pop();
+
+        if(i == idx){
+            ans = curr;
+        }
+        q.push(curr);
+    }
+    return ans;
+}
+
 void print(queue<int>& q){
     int n = q.size();
     while(n--){
