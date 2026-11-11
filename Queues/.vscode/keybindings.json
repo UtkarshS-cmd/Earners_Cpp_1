@@ -7,7 +7,7 @@
     {
         "key": "ctrl+shift+enter",
         "command": "workbench.action.tasks.runTask",
-        "args": "build and run QueueSTL",
+        "args": "build and run current C++ file",
         "when": "editorTextFocus"
     }
 ]

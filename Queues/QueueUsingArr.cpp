@@ -1,22 +1,27 @@
 #include <iostream>
+#include <stdexcept>
 using namespace std;
 
 class myQueue {
     int *arr;
     int capacity;
     int size;
+    int front;
 
 public:
-    myQueue(int c) {
-        capacity = c;
+    myQueue(int c) : arr(nullptr), capacity(c), size(0), front(0) {
+        if (capacity <= 0) {
+            throw invalid_argument("Queue capacity must be greater than zero.");
+        }
         arr = new int[capacity];
-        size = 0;
     }
 
-    // Free dynamically allocated memory
     ~myQueue() {
         delete[] arr;
     }
+
+    myQueue(const myQueue&) = delete;
+    myQueue& operator=(const myQueue&) = delete;
 
     bool isEmpty() {
         return size == 0;
@@ -26,56 +31,47 @@ public:
         return size == capacity;
     }
 
-    // Add element to rear
     void enqueue(int x) {
         if (isFull()) {
             cout << "Queue is full!\n";
             return;
         }
 
-        arr[size] = x;
+        arr[(front + size) % capacity] = x;
         size++;
 
         cout << x << " inserted successfully.\n";
     }
 
-    // Remove front element
     void dequeue() {
         if (isEmpty()) {
             cout << "Queue is empty!\n";
             return;
         }
 
-        cout << arr[0] << " removed successfully.\n";
-
-        for (int i = 1; i < size; i++) {
-            arr[i - 1] = arr[i];
-        }
-
+        cout << arr[front] << " removed successfully.\n";
+        front = (front + 1) % capacity;
         size--;
     }
 
-    // Return front element
     int getFront() {
         if (isEmpty()) {
             cout << "Queue is empty!\n";
             return -1;
         }
 
-        return arr[0];
+        return arr[front];
     }
 
-    // Return rear element
     int getRear() {
         if (isEmpty()) {
             cout << "Queue is empty!\n";
             return -1;
         }
 
-        return arr[size - 1];
+        return arr[(front + size - 1) % capacity];
     }
 
-    // Display all elements
     void display() {
         if (isEmpty()) {
             cout << "Queue is empty!\n";
@@ -85,7 +81,7 @@ public:
         cout << "Queue: FRONT -> ";
 
         for (int i = 0; i < size; i++) {
-            cout << arr[i] << " ";
+            cout << arr[(front + i) % capacity] << " ";
         }
 
         cout << "<- REAR\n";
