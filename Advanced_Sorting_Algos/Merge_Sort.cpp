@@ -1,46 +1,77 @@
-#include<iostream>
+
+#include <iostream>
+#include <vector>
 using namespace std;
 
-void print(vector<int>& arr){
-    for(int ele : arr) 
-        cout<<ele<<" ";
-    cout<<endl;
-}
+// Merge two sorted parts of the array ->Compare, Push & Combine
+void merge(vector<int>& arr, int low, int mid, int high) {
 
-void merge(vector<int>& a, vector<int>& b, vector<int>& c){
-    int i = 0, j = 0, k = 0;
+    vector<int> temp;
 
-    while(i < a.size() && j < b.size()){
-        if(a[i] > b[j]) c[k++] = b[j++];
-        else c[k++] = a[i++];
+    int i = low;       // Left subarray pointer
+    int j = mid + 1;   // Right subarray pointer
+
+    // Compare elements and insert smaller one
+    while (i <= mid && j <= high) {
+
+        if (arr[i] <= arr[j]) {
+            temp.push_back(arr[i]);
+            i++;
+        }
+        else {
+            temp.push_back(arr[j]);
+            j++;
+        }
     }
 
-    while(i < a.size()) c[k++] = a[i++];
-    while(j < b.size()) c[k++] = b[j++];
+    // Copy remaining left elements
+    while (i <= mid) {
+        temp.push_back(arr[i]);
+        i++;
+    }
+
+    // Copy remaining right elements
+    while (j <= high) {
+        temp.push_back(arr[j]);
+        j++;
+    }
+
+    // Copy sorted elements back into original array
+    for (int k = 0; k < temp.size(); k++) {
+        arr[low + k] = temp[k];
+    }
 }
 
-void mergeSort(vector<int>& arr){
+// Recursive Merge Sort function->Divides 
+void mergeSort(vector<int>& arr, int low, int high) {
+
+    // Base condition
+    if (low >= high)
+        return;
+
+    int mid = low + (high - low) / 2;
+
+    // Divide into two halves
+    mergeSort(arr, low, mid);
+    mergeSort(arr, mid + 1, high);
+
+    // Merge sorted halves
+    merge(arr, low, mid, high);
+}
+
+int main() {
+
+    vector<int> arr = {38, 12, 27, 43, 9, 31, 18, 25};
+
     int n = arr.size();
-    if(n==1) return; // 1 sized array already sorted
 
-    vector<int> a(n/2);
-    vector<int> b(n-n/2);
-    int idx = 0; // arr ke elements ke liye
-    
-    for(int i=0;i<n/2;i++){ // a ko bharo
-        a[i] = arr[idx++];
-    }
-    for(int i=0;i<n-n/2;i++){ // b ko bharo
-        b[i] = arr[idx++];
-    }
-    mergeSort(a);
-    mergeSort(b);
-    merge(a,b,arr);
-}
+    mergeSort(arr, 0, n - 1);
 
-int main(){
-    vector<int> arr = {5,2,11,8,3,7,1,-4,6};
-    print(arr);
-    mergeSort(arr);
-    print(arr);
+    cout << "Sorted Array: ";
+
+    for (int x : arr) {
+        cout << x << " ";
+    }
+
+    return 0;
 }
