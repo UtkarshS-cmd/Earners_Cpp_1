@@ -1,7 +1,6 @@
 {
-    "code-runner.cwd": "$dir",
     "code-runner.runInTerminal": true,
     "code-runner.executorMap": {
-        "cpp": "g++ \"$fileName\" -o \"$fileNameWithoutExt.exe\"; if ($?) { & \".\\$fileNameWithoutExt.exe\" }"
+        "cpp": "g++ \"$fullFileName\" -o \"$dir\\$fileNameWithoutExt.exe\"; if ($LASTEXITCODE -eq 0) { & \"$dir\\$fileNameWithoutExt.exe\" }"
     }
 }
