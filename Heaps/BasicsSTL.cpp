@@ -4,6 +4,7 @@ using namespace std;
  
 int main(){
  priority_queue<int> pq; //maxHeap
+//   priority_queue<int,vector<int>,greater<int>> pq; //minHeap
  pq.push(5);
  cout<<pq.top()<<endl; //5
  pq.push(3);
