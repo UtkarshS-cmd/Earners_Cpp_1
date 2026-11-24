@@ -88,7 +88,7 @@ int main(){
     cout<<size(a)<<endl;
     cout<<sum(a)<<endl;
     cout<<maxInTree(a)<<endl;
-
+    
     // sumOfTree = 0;
     // sizeOfTree = 0;
     // maxOfTree = INT_MIN;
