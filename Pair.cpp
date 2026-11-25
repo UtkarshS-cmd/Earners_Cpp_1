@@ -5,7 +5,11 @@
 using namespace std;
 
 int main() {
-
+    pair<int,pair<int,int>> p = {1,{1,2}};
+    cout<<p.first<<endl; //9
+    cout<<p.second.first<<endl; //5
+    cout<<p.second.first<<endl; //7
+    
     // 1. Declaration and Initialization
     pair<int, int> p1;
     p1 = {10, 20};
