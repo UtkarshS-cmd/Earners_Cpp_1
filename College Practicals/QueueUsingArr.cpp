@@ -1,46 +1,34 @@
 #include <iostream>
-#include <stdexcept>
 using namespace std;
 
-class myQueue {
-    int *arr;
+class Queue {
+    int* arr;
     int capacity;
-    int size;
-    int front;
+    int rear;
 
 public:
-    myQueue(int c) : arr(nullptr), capacity(c), size(0), front(0) {
-        if (capacity <= 0) {
-            throw invalid_argument("Queue capacity must be greater than zero.");
-        }
+    Queue(int size) {
+        capacity = size;
         arr = new int[capacity];
+        rear = -1;
     }
 
-    ~myQueue() {
+    ~Queue() {
         delete[] arr;
     }
 
-    myQueue(const myQueue&) = delete;
-    myQueue& operator=(const myQueue&) = delete;
-
     bool isEmpty() {
-        return size == 0;
+        return rear == -1;
     }
 
-    bool isFull() {
-        return size == capacity;
-    }
-
-    void enqueue(int x) {
-        if (isFull()) {
+    void enqueue(int value) {
+        if (rear == capacity - 1) {
             cout << "Queue is full!\n";
             return;
         }
 
-        arr[(front + size) % capacity] = x;
-        size++;
-
-        cout << x << " inserted successfully.\n";
+        arr[++rear] = value;
+        cout << value << " inserted successfully.\n";
     }
 
     void dequeue() {
@@ -49,27 +37,26 @@ public:
             return;
         }
 
-        cout << arr[front] << " removed successfully.\n";
-        front = (front + 1) % capacity;
-        size--;
+        cout << arr[0] << " removed successfully.\n";
+
+        for (int i = 0; i < rear; i++) {
+            arr[i] = arr[i + 1];
+        }
+        rear--;
     }
 
-    int getFront() {
-        if (isEmpty()) {
+    void getFront() {
+        if (isEmpty())
             cout << "Queue is empty!\n";
-            return -1;
-        }
-
-        return arr[front];
+        else
+            cout << "Front element: " << arr[0] << '\n';
     }
 
-    int getRear() {
-        if (isEmpty()) {
+    void getRear() {
+        if (isEmpty())
             cout << "Queue is empty!\n";
-            return -1;
-        }
-
-        return arr[(front + size - 1) % capacity];
+        else
+            cout << "Rear element: " << arr[rear] << '\n';
     }
 
     void display() {
@@ -78,19 +65,16 @@ public:
             return;
         }
 
-        cout << "Queue: FRONT -> ";
-
-        for (int i = 0; i < size; i++) {
-            cout << arr[(front + i) % capacity] << " ";
+        cout << "Queue elements: ";
+        for (int i = 0; i <= rear; i++) {
+            cout << arr[i] << " ";
         }
-
-        cout << "<- REAR\n";
+        cout << '\n';
     }
 };
 
 int main() {
     int capacity;
-
     cout << "Enter queue capacity: ";
     cin >> capacity;
 
@@ -99,77 +83,49 @@ int main() {
         return 1;
     }
 
-    myQueue q(capacity);
+    Queue q(capacity);
     int choice, value;
 
     do {
-        cout << "\n========== QUEUE MENU ==========\n";
-        cout << "1. Enqueue (Insert element)\n";
-        cout << "2. Dequeue (Remove element)\n";
-        cout << "3. Get Front element\n";
-        cout << "4. Get Rear element\n";
+        cout << "\n===== QUEUE USING ARRAY =====\n";
+        cout << "1. Enqueue (Insert)\n";
+        cout << "2. Dequeue (Remove)\n";
+        cout << "3. Get Front\n";
+        cout << "4. Get Rear\n";
         cout << "5. Display Queue\n";
-        cout << "6. Check if Queue is Empty\n";
-        cout << "7. Check if Queue is Full\n";
-        cout << "8. Exit\n";
-        cout << "================================\n";
+        cout << "6. Check if Empty\n";
+        cout << "0. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
         switch (choice) {
             case 1:
-                cout << "Enter value to insert: ";
+                cout << "Enter value: ";
                 cin >> value;
                 q.enqueue(value);
                 break;
-
             case 2:
                 q.dequeue();
                 break;
-
             case 3:
-                if (!q.isEmpty())
-                    cout << "Front element: "
-                         << q.getFront() << "\n";
-                else
-                    q.getFront();
+                q.getFront();
                 break;
-
             case 4:
-                if (!q.isEmpty())
-                    cout << "Rear element: "
-                         << q.getRear() << "\n";
-                else
-                    q.getRear();
+                q.getRear();
                 break;
-
             case 5:
                 q.display();
                 break;
-
             case 6:
-                if (q.isEmpty())
-                    cout << "Queue is empty.\n";
-                else
-                    cout << "Queue is not empty.\n";
+                cout << (q.isEmpty() ? "Queue is empty.\n" : "Queue is not empty.\n");
                 break;
-
-            case 7:
-                if (q.isFull())
-                    cout << "Queue is full.\n";
-                else
-                    cout << "Queue is not full.\n";
-                break;
-
-            case 8:
+            case 0:
                 cout << "Exiting program. Goodbye!\n";
                 break;
-
             default:
-                cout << "Invalid choice! Please select 1-8.\n";
+                cout << "Invalid choice! Try again.\n";
         }
-
-    } while (choice != 8);
+    } while (choice != 0);
 
     return 0;
 }

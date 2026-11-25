@@ -1,4 +1,3 @@
-
 #include <iostream>
 using namespace std;
 
@@ -6,47 +5,42 @@ class Queue {
     struct Node {
         int data;
         Node* next;
-
-        Node(int x) {
-            data = x;
-            next = NULL;
-        }
     };
 
     Node* front;
     Node* rear;
 
 public:
-
-    Queue() : front(NULL), rear(NULL) {}
+    Queue() {
+        front = nullptr;
+        rear = nullptr;
+    }
 
     ~Queue() {
-        while (front != NULL) {
+        while (front != nullptr) {
             Node* temp = front;
             front = front->next;
             delete temp;
         }
     }
 
-    Queue(const Queue&) = delete;
-    Queue& operator=(const Queue&) = delete;
-
     bool isEmpty() {
-        return front == NULL;
+        return front == nullptr;
     }
 
-    void enqueue(int x) {
-        Node* newNode = new Node(x);
+    void enqueue(int value) {
+        Node* newNode = new Node;
+        newNode->data = value;
+        newNode->next = nullptr;
 
-        if (isEmpty()) {
+        if (isEmpty())
             front = rear = newNode;
-        }
         else {
             rear->next = newNode;
             rear = newNode;
         }
 
-        cout << x << " inserted into the queue.\n";
+        cout << value << " inserted successfully.\n";
     }
 
     void dequeue() {
@@ -56,14 +50,11 @@ public:
         }
 
         Node* temp = front;
-
-        cout << "Dequeued element: " << front->data << '\n';
-
+        cout << front->data << " removed successfully.\n";
         front = front->next;
 
-        if (front == NULL) {
-            rear = NULL;
-        }
+        if (front == nullptr)
+            rear = nullptr;
 
         delete temp;
     }
@@ -89,21 +80,17 @@ public:
         }
 
         cout << "Queue elements: ";
-
         Node* temp = front;
-
-        while (temp != NULL) {
+        while (temp != nullptr) {
             cout << temp->data << " ";
             temp = temp->next;
         }
-
         cout << '\n';
     }
 };
 
 int main() {
     Queue q;
-
     int choice, value;
 
     do {
@@ -115,48 +102,36 @@ int main() {
         cout << "5. Display Queue\n";
         cout << "6. Check if Empty\n";
         cout << "0. Exit\n";
-
         cout << "Enter your choice: ";
         cin >> choice;
 
         switch (choice) {
-
             case 1:
                 cout << "Enter value: ";
                 cin >> value;
                 q.enqueue(value);
                 break;
-
             case 2:
                 q.dequeue();
                 break;
-
             case 3:
                 q.getFront();
                 break;
-
             case 4:
                 q.getRear();
                 break;
-
             case 5:
                 q.display();
                 break;
-
             case 6:
-                cout << (q.isEmpty() ?
-                    "Queue is empty.\n" :
-                    "Queue is not empty.\n");
+                cout << (q.isEmpty() ? "Queue is empty.\n" : "Queue is not empty.\n");
                 break;
-
             case 0:
                 cout << "Exiting program. Goodbye!\n";
                 break;
-
             default:
                 cout << "Invalid choice! Try again.\n";
         }
-
     } while (choice != 0);
 
     return 0;
